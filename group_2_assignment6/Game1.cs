@@ -14,9 +14,9 @@ public class Game1 : Game
     private const int CellSize = 10;
     private const int GridRows = 60;
     private const int GridCols = 80;
-    private const float InitialInfectionRate = 0.05f;
+    private const float InitialInfectionRate = 0.01f;
     private Simulation _simulation;
-    private const float InfectionChance = 0.3f;
+    private const float InfectionChance = 0.01f;
 
     public Game1()
     {
@@ -57,7 +57,7 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Black);
+        GraphicsDevice.Clear(Color.DarkBlue);
 
         _spriteBatch.Begin();
 
@@ -65,12 +65,22 @@ public class Game1 : Game
         {
             for (int c = 0; c < _grid.Cols; c++)
             {
+                // Water cells - draw ocean
+                if (!_grid.IsLand(r, c))
+                {
+                    _spriteBatch.Draw(
+                        _pixel,
+                        new Rectangle(c * CellSize, r * CellSize, CellSize, CellSize),
+                        Color.DarkBlue);
+                    continue;
+                }
+
                 Person person = _grid.GetCell(r, c);
                 Color color = person.Health switch
                 {
                     Person.Healthy => Color.Green,
                     Person.Infected => Color.Red,
-                    Person.Recovered => Color.Blue,
+                    Person.Recovered => Color.CornflowerBlue,
                     _ => Color.White
                 };
 
@@ -78,10 +88,10 @@ public class Game1 : Game
                     _pixel,
                     new Rectangle(c * CellSize, r * CellSize, CellSize - 1, CellSize - 1),
                     color);
-                
-                //add a black border around each cell
-                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, CellSize - 1, 1), Color.Black); // top border
-                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, 1, CellSize - 1), Color.Black); // left border
+
+                // Black border around each land cell
+                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, CellSize - 1, 1), Color.Black);
+                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, 1, CellSize - 1), Color.Black);
             }
         }
 

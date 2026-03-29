@@ -9,7 +9,7 @@ public class Simulation
     private float _infectionChance;
     private Random _random;
     private float _timeSinceLastStep;
-    private const float StepInterval = 0.5f;
+    private const float StepInterval = 0.1f;
 
     public Simulation(Grid grid, float infectionChance)
     {
@@ -39,23 +39,25 @@ public class Simulation
             for (int c = 0; c < _grid.Cols; c++)
             {
                 Person person = _grid.GetCell(r, c);
-                
+
+                // Skip water cells
+                if (person == null)
+                    continue;
+
                 // Rule: Only healthy people can become infected
                 if (person.Health != Person.Healthy)
                     continue;
                 
-                // Check if any neighbor is infected
-                foreach (Person neighbor in _grid.GetNeighbors(r, c) )
+                // Roll for each infected neighbor individually
+                foreach (Person neighbor in _grid.GetNeighbors(r, c))
                 {
                     if (neighbor.Health == Person.Infected)
                     {
-                        // Apply the infection change
                         if (_random.NextDouble() < _infectionChance)
                         {
                             newlyInfected[r, c] = true;
+                            break; // Already infected, no need to keep rolling
                         }
-
-                        break; // Only need one infected neighbor to trigger
                     }
                 }
             }
@@ -76,6 +78,6 @@ public class Simulation
     // No draw, delegate to the grid only
     public void Draw()
     {
-        _grid.Update(new GameTime());
+        // _grid.Update(new GameTime());
     }
 }
