@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 
 namespace group_2_assignment6;
 
-// Stub class for Person - Jinsoo will expand this.
 public class Person
 {
     // Health states
@@ -23,15 +22,28 @@ public class Person
 
     public void Update(GameTime gameTime)
     {
+        // RULE(Disease Progression): An infected person remains infected for a fixed number of time steps
         if (Health == Infected)
         {
             ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            
+            // RULE(Recovery): After the infection period ends, the infected person becomes recovered and can
+            // no longer spread or catch the disease
             if (ElapsedTime >= MaxInfectedTime)
             {
                 Health = Recovered;
                 ElapsedTime = 0f;
             }
+        }
+    }
+    
+    // Spread a disease and let a person be infected
+    public void SpreadDisease()
+    {
+        if (Health == Healthy)
+        {
+            Health = Infected;
+            ElapsedTime = 0f;
         }
     }
 }
