@@ -15,6 +15,8 @@ public class Game1 : Game
     private const int GridRows = 60;
     private const int GridCols = 80;
     private const float InitialInfectionRate = 0.05f;
+    private Simulation _simulation;
+    private const float InfectionChance = 0.3f;
 
     public Game1()
     {
@@ -28,6 +30,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         _grid = new Grid(GridRows, GridCols, InitialInfectionRate);
+        _simulation = new Simulation(_grid, InfectionChance);
         base.Initialize();
     }
 
@@ -46,6 +49,7 @@ public class Game1 : Game
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        _simulation.Update(gameTime);
         _grid.Update(gameTime);
 
         base.Update(gameTime);
