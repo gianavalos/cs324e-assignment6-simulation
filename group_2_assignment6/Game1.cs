@@ -74,6 +74,10 @@ public class Game1 : Game
                     _pixel,
                     new Rectangle(c * CellSize, r * CellSize, CellSize - 1, CellSize - 1),
                     color);
+                
+                //add a black border around each cell
+                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, CellSize - 1, 1), Color.Black); // top border
+                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, 1, CellSize - 1), Color.Black); // left border
             }
         }
 
