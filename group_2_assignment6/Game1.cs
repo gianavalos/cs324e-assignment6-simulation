@@ -84,14 +84,17 @@ public class Game1 : Game
                     _ => Color.White
                 };
 
+                // Draw black border first (full cell)
                 _spriteBatch.Draw(
                     _pixel,
-                    new Rectangle(c * CellSize, r * CellSize, CellSize - 1, CellSize - 1),
-                    color);
+                    new Rectangle(c * CellSize, r * CellSize, CellSize, CellSize),
+                    Color.Black);
 
-                // Black border around each land cell
-                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, CellSize - 1, 1), Color.Black);
-                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, 1, CellSize - 1), Color.Black);
+                // Draw colored cell inset by 1 pixel on each side
+                _spriteBatch.Draw(
+                    _pixel,
+                    new Rectangle(c * CellSize + 1, r * CellSize + 1, CellSize - 2, CellSize - 2),
+                    color);
             }
         }
 
