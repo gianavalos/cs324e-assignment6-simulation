@@ -13,10 +13,11 @@ public class Game1 : Game
     private Texture2D _healthySprite;
     private Texture2D _infectedSprite;
     private Texture2D _recoveredSprite;
+    private Texture2D _waterTexture;
 
-    private const int CellSize = 24;
-    private const int GridRows = 30;
-    private const int GridCols = 40;
+    private const int CellSize = 16;
+    private const int GridRows = 60;
+    private const int GridCols = 80;
     private const float InitialInfectionRate = 0.05f;
     private Simulation _simulation;
     private const float InfectionChance = 0.3f;
@@ -40,7 +41,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+        _waterTexture = Content.Load<Texture2D>("imgs/1");
         // Create a 1x1 white pixel texture for drawing cells
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData(new[] { Color.White });
@@ -65,6 +66,9 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
+        _spriteBatch.Begin();
+        _spriteBatch.Draw(_waterTexture, new Rectangle(0, 0, GridCols * CellSize, GridRows * CellSize), Color.White);
+        _spriteBatch.End();
 
         _spriteBatch.Begin();
 
@@ -73,7 +77,11 @@ public class Game1 : Game
             for (int c = 0; c < _grid.Cols; c++)
             {
                 Person person = _grid.GetCell(r, c);
-        
+                
+                // Skip water cells
+                if (person == null)
+                    continue;
+                
                 Texture2D sprite = person.Health switch
                 {
                     Person.Healthy => _healthySprite,
