@@ -20,7 +20,7 @@ public class Game1 : Game
     private Texture2D _recoveredLegend;
     
 
-    private const int CellSize = 10;
+    private const int CellSize = 16;
     private const int GridRows = 60;
     private const int GridCols = 80;
     private const float InitialInfectionRate = 0.02f;
@@ -110,6 +110,11 @@ public class Game1 : Game
             {
                 if (!_grid.IsLand(r, c))
                     continue;
+
+                // Green land background
+                _spriteBatch.Draw(_pixel,
+                    new Rectangle(c * CellSize, r * CellSize, CellSize, CellSize),
+                    new Color(180, 200, 150));
 
                 Person person = _grid.GetCell(r, c);
                 if (person == null)
