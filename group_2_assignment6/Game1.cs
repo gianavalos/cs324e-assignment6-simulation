@@ -10,10 +10,13 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private Grid _grid;
     private Texture2D _pixel;
+    private Texture2D _healthySprite;
+    private Texture2D _infectedSprite;
+    private Texture2D _recoveredSprite;
 
-    private const int CellSize = 10;
-    private const int GridRows = 60;
-    private const int GridCols = 80;
+    private const int CellSize = 24;
+    private const int GridRows = 30;
+    private const int GridCols = 40;
     private const float InitialInfectionRate = 0.05f;
     private Simulation _simulation;
     private const float InfectionChance = 0.3f;
@@ -41,6 +44,10 @@ public class Game1 : Game
         // Create a 1x1 white pixel texture for drawing cells
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData(new[] { Color.White });
+        
+        _healthySprite = Content.Load<Texture2D>("imgs/1 idle");   // first character
+        _infectedSprite = Content.Load<Texture2D>("imgs/4 idle");  // green alien
+        _recoveredSprite = Content.Load<Texture2D>("imgs/10 idle"); // recovered character
     }
 
     protected override void Update(GameTime gameTime)
@@ -66,27 +73,21 @@ public class Game1 : Game
             for (int c = 0; c < _grid.Cols; c++)
             {
                 Person person = _grid.GetCell(r, c);
-                Color color = person.Health switch
+        
+                Texture2D sprite = person.Health switch
                 {
-                    Person.Healthy => Color.Green,
-                    Person.Infected => Color.Red,
-                    Person.Recovered => Color.Blue,
-                    _ => Color.White
+                    Person.Healthy => _healthySprite,
+                    Person.Infected => _infectedSprite,
+                    Person.Recovered => _recoveredSprite,
+                    _ => _healthySprite
                 };
 
-                _spriteBatch.Draw(
-                    _pixel,
-                    new Rectangle(c * CellSize, r * CellSize, CellSize - 1, CellSize - 1),
-                    color);
-                
-                //add a black border around each cell
-                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, CellSize - 1, 1), Color.Black); // top border
-                _spriteBatch.Draw(_pixel, new Rectangle(c * CellSize, r * CellSize, 1, CellSize - 1), Color.Black); // left border
+                Rectangle sourceFrame = new Rectangle(0, 0, 16, 16);
+                Rectangle destRect = new Rectangle(c * CellSize, r * CellSize, CellSize, CellSize);
+                _spriteBatch.Draw(sprite, destRect, sourceFrame, Color.White);
             }
         }
-
         _spriteBatch.End();
-
         base.Draw(gameTime);
     }
 }
