@@ -15,6 +15,10 @@ public class Game1 : Game
     private Texture2D _recoveredSprite;
     private SpriteFont _font;
     private Texture2D _waterTexture;
+    private Texture2D _healthyLegend;
+    private Texture2D _sickLegend;
+    private Texture2D _recoveredLegend;
+    
 
     private const int CellSize = 10;
     private const int GridRows = 60;
@@ -52,6 +56,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        _waterTexture = Content.Load<Texture2D>("imgs/1");
         // Create a 1x1 white pixel texture for drawing cells
         _pixel = new Texture2D(GraphicsDevice, 1, 1);
         _pixel.SetData(new[] { Color.White });
@@ -59,7 +64,11 @@ public class Game1 : Game
         _healthySprite = Content.Load<Texture2D>("imgs/1 idle");
         _sickSprite = Content.Load<Texture2D>("imgs/4 idle");
         _recoveredSprite = Content.Load<Texture2D>("imgs/10 idle");
-        _waterTexture = Content.Load<Texture2D>("imgs/1");
+        
+        _healthyLegend = Content.Load<Texture2D>("healthy");
+        _sickLegend = Content.Load<Texture2D>("sick");
+        _recoveredLegend = Content.Load<Texture2D>("recovered");
+        
         _font = Content.Load<SpriteFont>("DefaultFont");
     }
 
@@ -154,7 +163,7 @@ public class Game1 : Game
         int spacing = 100;
 
         // Healthy
-        _spriteBatch.Draw(_healthySprite, new Rectangle(spriteCenterX, legendY, spriteDisplaySize, spriteDisplaySize), Color.White);
+        _spriteBatch.Draw(_healthyLegend, new Rectangle(spriteCenterX, legendY, spriteDisplaySize, spriteDisplaySize), Color.White);
         string healthyLabel = "Healthy";
         Vector2 healthySize = _font.MeasureString(healthyLabel);
         _spriteBatch.DrawString(_font, healthyLabel,
@@ -162,7 +171,7 @@ public class Game1 : Game
 
         // Sick
         int sickY = legendY + spacing;
-        _spriteBatch.Draw(_sickSprite, new Rectangle(spriteCenterX, sickY, spriteDisplaySize, spriteDisplaySize), Color.White);
+        _spriteBatch.Draw(_sickLegend, new Rectangle(spriteCenterX, sickY, spriteDisplaySize, spriteDisplaySize), Color.White);
         string sickLabel = "Sick";
         Vector2 sickSize = _font.MeasureString(sickLabel);
         _spriteBatch.DrawString(_font, sickLabel,
@@ -170,7 +179,7 @@ public class Game1 : Game
 
         // Recovered
         int recY = legendY + spacing * 2;
-        _spriteBatch.Draw(_recoveredSprite, new Rectangle(spriteCenterX, recY, spriteDisplaySize, spriteDisplaySize), Color.White);
+        _spriteBatch.Draw(_recoveredLegend, new Rectangle(spriteCenterX, recY, spriteDisplaySize, spriteDisplaySize), Color.White);
         string recLabel = "Recovered";
         Vector2 recSize = _font.MeasureString(recLabel);
         _spriteBatch.DrawString(_font, recLabel,
