@@ -1,0 +1,31 @@
+Assignment 6 - Project Description
+Group 2
+
+Intended Simulation:
+A rules-based disease spread simulation across a world map of jagged islands connected
+by narrow land bridges. Each cell on the grid represents a person who can be healthy,
+infected, or recovered. The disease spreads through choke points between islands,
+creating interesting propagation patterns.
+
+Classes:
+- Grid.cs: 2D grid environment storing the population. Generates a predefined island
+  map with jagged coastlines and narrow bridge choke points. Handles boundary rules
+  (edge cells have fewer neighbors) and initial infection seeding (random distribution
+  at a configurable rate).
+- Person.cs: Represents an individual with a health state. Handles disease progression
+  (tracking infection duration) and recovery (transitioning to recovered after a set time).
+- Simulation.cs: Applies infection spread rules each timestep. Rolls infection chance
+  per infected neighbor and uses simultaneous state updates so all cells update based
+  on the same snapshot.
+- Game1.cs: Main game class. Renders the grid, handles the UI legend panel with
+  sprite icons, and provides a replay button to restart the simulation.
+
+Group Member Contributions:
+- Blake: Grid class (island map generation, boundary handling, infection seeding) and UI 
+- Jinsoo: Person class (health states, disease progression, recovery) 
+- Gian: Simulation class (infection spread logic, simultaneous updates) and rendering sprites
+- Sydney: Rendering code
+
+Challenges:
+- Balancing infection chance and recovery time so the disease spreads visibly through
+  choke points without infecting everything instantly or dying out too quickly.
